@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] Image timerImage;
+
 
     [SerializeField] float timeToCompleteQuestion = 30f;
     [SerializeField] float timeToShowCorrectAnswer = 10f;
@@ -13,6 +13,7 @@ public class Timer : MonoBehaviour
     public bool isAnsweringQuestion = false;
     public bool loadNextQuestion;
     float timerValue;
+    public float timerFraction;
 
 
 
@@ -28,38 +29,37 @@ public class Timer : MonoBehaviour
         
         
 
-        if (timerValue > 0)
-        {
-            if (isAnsweringQuestion)
-            {
-                timerImage.fillAmount = timerValue / timeToCompleteQuestion;
-            }
-            else
-            {
-                timerImage.fillAmount = timerValue / timeToShowCorrectAnswer;
-            }
-            
-        }
-
-
         if (isAnsweringQuestion)
         {
-
-            if (timerValue <= 0)
+            
+            if (timerValue > 0) 
+            {
+                
+                timerFraction = timerValue / timeToCompleteQuestion;
+            }
+            else 
             {
                 isAnsweringQuestion = false;
                 timerValue = timeToShowCorrectAnswer;
             }
 
         }
-        else
+        else 
         {
-            if (timerValue <= 0)
+            if (timerValue > 0) 
             {
+                timerFraction = timerValue / timeToShowCorrectAnswer;
+            }
+            else {
                 isAnsweringQuestion = true;
                 timerValue = timeToCompleteQuestion;
+                loadNextQuestion = true;
             }
         }
+    }
 
+    public void CancelTimer()
+    {
+        timerValue = 0;
     }
 }
